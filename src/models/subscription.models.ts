@@ -1,27 +1,5 @@
 import { model, Schema } from "mongoose";
-
-interface ISchema {
-  name: string;
-  price: number;
-  currency: "USD" | "EUR" | "GBP";
-  frequency: "daily" | "weekly" | "monthly" | "yearly";
-  category:
-    | "sports"
-    | "news"
-    | "entertainment"
-    | "lifestyle"
-    | "education"
-    | "technology"
-    | "finance"
-    | "politics"
-    | "travel"
-    | "other";
-  paymentMethod: string;
-  status: "active" | "cancelled" | "expired";
-  startDate: Date;
-  renewalDate: Date;
-  user: Schema.Types.ObjectId;
-}
+import type { ISchema } from "../types";
 
 const subscriptionSchema = new Schema<ISchema>(
   {
