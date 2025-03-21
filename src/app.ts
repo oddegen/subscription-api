@@ -1,4 +1,5 @@
 import express from "express";
+import cookieParser from "cookie-parser";
 
 import { PORT } from "./config/env";
 
@@ -8,6 +9,10 @@ import subscriptionRouter from "./routes/subscription.routes";
 import connectToDatabase from "./database/mongodb";
 
 const app = express();
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", userRouter);
