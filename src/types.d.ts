@@ -1,8 +1,4 @@
-import type { Schema } from "mongoose";
-
-interface ErrorT extends Error {
-  statusCode?: number;
-}
+import type { Schema, Types } from "mongoose";
 
 interface IUser {
   name: string;
@@ -10,7 +6,7 @@ interface IUser {
   password: string;
 }
 
-interface ISchema {
+interface ISubscription {
   name: string;
   price: number;
   currency: "USD" | "EUR" | "GBP";
@@ -32,3 +28,27 @@ interface ISchema {
   renewalDate: Date;
   user: Schema.Types.ObjectId;
 }
+
+declare module "jsonwebtoken" {
+  export interface JwtPayload {
+    userId: string;
+  }
+}
+
+declare global {
+  namespace Express {
+    interface Request {
+      user?: IUser & {
+        _id: Types.ObjectId;
+      };
+    }
+  }
+}
+
+declare global {
+  interface Error {
+    statusCode?: number;
+  }
+}
+
+export { Express, IUser, ISubscription };
