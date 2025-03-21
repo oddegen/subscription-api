@@ -1,7 +1,7 @@
 import { model, Schema } from "mongoose";
-import type { ISchema } from "../types";
+import type { ISubscription } from "../types";
 
-const subscriptionSchema = new Schema<ISchema>(
+const subscriptionSchema = new Schema<ISubscription>(
   {
     name: {
       type: String,
