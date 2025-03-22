@@ -60,7 +60,6 @@ const subscriptionSchema = new Schema<ISubscription>(
     },
     renewalDate: {
       type: Date,
-      required: true,
       validate: {
         validator: function (value: Date) {
           return value > this.startDate;

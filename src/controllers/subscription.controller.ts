@@ -1,6 +1,6 @@
 import Subscription from "../models/subscription.model";
-import { workflowClient } from "../config/upstash";
-import { SERVER_URL } from "../config/env";
+// import { workflowClient } from "../config/upstash";
+// import { SERVER_URL } from "../config/env";
 import type { RequestHandler } from "express";
 import mongoose from "mongoose";
 
@@ -44,23 +44,21 @@ export const createSubscription: RequestHandler = async (req, res, next) => {
       { session }
     );
 
-    const { workflowRunId } = await workflowClient.trigger({
-      url: `${SERVER_URL}/api/v1/workflows/subscription/reminder`,
-      body: {
-        subscriptionId: subscription.id,
-      },
-      headers: {
-        "content-type": "application/json",
-      },
-      retries: 0,
-    });
+    // const { workflowRunId } = await workflowClient.trigger({
+    //   url: `${SERVER_URL}/api/v1/workflows/subscription/reminder`,
+    //   body: {
+    //     subscriptionId: subscription.id,
+    //   },
+    //   headers: {
+    //     "content-type": "application/json",
+    //   },
+    //   retries: 0,
+    // });
 
     session.commitTransaction();
     session.endSession();
 
-    res
-      .status(201)
-      .json({ success: true, data: { subscription, workflowRunId } });
+    res.status(201).json({ success: true, data: { subscription } });
   } catch (error) {
     next(error);
   }
