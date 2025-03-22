@@ -66,8 +66,8 @@ export const createUser: RequestHandler = async (req, res, next) => {
 };
 
 export const updateUser: RequestHandler = async (req, res, next) => {
-  const startSession = await mongoose.startSession();
-  startSession.startTransaction();
+  const session = await mongoose.startSession();
+  session.startTransaction();
 
   try {
     const user = User.findById(req.params.id);
@@ -80,14 +80,13 @@ export const updateUser: RequestHandler = async (req, res, next) => {
 
     const { name, email } = req.body;
 
-    const updatedUser = await User.findByIdAndUpdate(
-      req.params.id,
+    const updatedUser = await user.updateOne(
       { name, email },
-      { new: true, runValidators: true, session: startSession }
+      { new: true, runValidators: true, session: session }
     );
 
-    await startSession.commitTransaction();
-    startSession.endSession();
+    await session.commitTransaction();
+    session.endSession();
 
     res.status(200).json({
       success: true,
@@ -112,7 +111,7 @@ export const deleteUser: RequestHandler = async (req, res, next) => {
       throw error;
     }
 
-    await User.findByIdAndDelete(req.params.id, { session });
+    user.deleteOne({ session });
 
     await session.commitTransaction();
     session.endSession();
